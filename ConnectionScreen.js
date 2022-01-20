@@ -62,6 +62,7 @@ export default class ConnectionScreen extends React.Component {
   async connect() {
     try {
       let connection = await this.props.device.isConnected();
+      console.log('connectionconnection', connection);
       if (!connection) {
         this.addData({
           data: `Attempting connection to ${this.props.device.address}`,
@@ -69,9 +70,9 @@ export default class ConnectionScreen extends React.Component {
           type: 'error',
         });
 
-        console.log(this.state.connectionOptions);
+        console.log('connection111', this.state.connectionOptions);
         connection = await this.props.device.connect();
-
+        console.log('connection2', connection);
         this.addData({
           data: 'Connection successful',
           timestamp: new Date(),
@@ -88,6 +89,7 @@ export default class ConnectionScreen extends React.Component {
       this.setState({ connection });
       this.initializeRead();
     } catch (error) {
+      console.log('error connect', error);
       this.addData({
         data: `Connection failed: ${error.message}`,
         timestamp: new Date(),
@@ -97,7 +99,8 @@ export default class ConnectionScreen extends React.Component {
   }
 
   async disconnect(disconnected) {
-    console.log('disconnect');
+    console.log('disconnected', disconnected);
+    this.connect();
     try {
       if (!disconnected) {
         disconnected = await this.props.device.disconnect();
@@ -234,7 +237,7 @@ export default class ConnectionScreen extends React.Component {
       ? 'radio-button-on'
       : 'radio-button-off';
 
-    console.log('props device', this.props.device);
+    // console.log('props device', this.props.device);
 
     return (
       <View>
