@@ -13,7 +13,6 @@ import RNBluetoothClassic, {
   BluetoothDevice,
 } from 'react-native-bluetooth-classic';
 import BondedDevice from './BondedDevice';
-import ConnectionScreen from './ConnectionScreen';
 
 class App extends Component {
   constructor(props) {
@@ -51,14 +50,13 @@ class App extends Component {
       listBondedDevices = await RNBluetoothClassic.getBondedDevices();
       let interestingList = [];
       console.log('listBondedDevices', listBondedDevices);
-      const dv = listBondedDevices?.find(e => e.id === "F4:5E:AB:DB:1F:B9");
-
+      const dv = listBondedDevices?.filter(e => e.id === "F4:5E:AB:DB:1F:B9");
       // listBondedDevices.forEach(device => {
       //   if (device.name.includes('Jabra') || device.name.includes('LOG')) {
       //     interestingList.push(device);
       //   }
       // });
-      this.setState({ device: dv });
+      this.setState({ bondedDevices: dv });
     } catch (err) {
       console.log(err);
     }
@@ -78,13 +76,12 @@ class App extends Component {
           </Text>
         </View>
 
-        {/* <FlatList
+        <FlatList
           style={styles.list}
           data={this.state.bondedDevices}
           renderItem={({ item }) => <BondedDevice device={item} />}
           keyExtractor={(item, index) => index.toString()}
-        /> */}
-        {this.state.device && <ConnectionScreen device={this.state.device} />}
+        />
       </SafeAreaView>
     );
   }
